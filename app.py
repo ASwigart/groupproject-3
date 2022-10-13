@@ -1,41 +1,61 @@
 # 
 import sqlite3
+import sqlalchemy
 import json
 
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify, g
-from flask_cors import CORS 
+from flask_cors import CORS, cross_origin 
 
-app=Flask(__name__)
-CORS(app)
+
 
 Database1 = '../resources/arrivals.sqlite'
 Database2 = '../resources/barchart.sqlite'
 Database3 = '../resources/world.sqlite'
-# route to render index.html
-@app.route("/")
-def home():
-# template for index.html 
+
+def connect_to_db1():
+    conn1 = sqlite3.connect(Database1)
+    return conn1
+def connect_to_db2():
+    conn2 = sqlite3.connect(Database2)
+    return conn2
+def connect_to_db3():
+    conn3 = sqlite3.connect(Database3)
+
+
+# imported from old flask attempt disregard unless needed
+# # DB set-up
+# engine = create_engine("sqlite:///___________.sqlite")
+# # reflect an existing DB
+# Base = automap_base()
+# # reflect tables
+# Base.prepare(engine, reflect=True)
+# # save reference to table
+# Refugee = Base.classes
 
 # https://flask.palletsprojects.com/en/2.2.x/patterns/sqlite3/
 # for arrivals
 # @app.route("/api/v1.0/from80to2021")
-    def connect_to_db():
-        db1 = getattr(g, '_database1', None)
-        if db1 is None:
-            db1 = g._database1 = sqlite3.connect('../resources/arrivals.sqlite')
-        return db1
+
+def connect_to_db1():
+    conn = sqlite3.connect('../resources/arrivals.sqlite')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 def lite_get_db1():
     db1 = []
     try:
-        conn = sqlite3.connect(g._database1)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
+        conn1 = sqlite3.connect(g._database1)
+        conn1.row_factory = sqlite3.Row
+        cur = conn1.cursor()
         cur.execute("SELECT * FROM arrivals")
         rows = cur.fetchall()
 
-        #covert to dictionary
+        #convert to dictionary
         for i in rows:
             arrival = {}
             arrival["year"] = i["year"]
@@ -43,10 +63,12 @@ def lite_get_db1():
             db1.append(arrival)
     except:
             db1=[]
+    finally:        
+        conn1.close()
+    return jsonify({arrival})
 
-    conn.close()
-    return db1
-            
+
+
 # @app.teardown_appcontext
 # def close_connection(exception):
 #     db1 = getattr(g, '_database1', None)
@@ -65,13 +87,13 @@ def connect_to_db():
 def lite_get_db2():
     db2 = []
     try:
-        conn = sqlite3.connect(g._database2)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
+        conn2 = sqlite3.connect(g._database2)
+        conn2.row_factory = sqlite3.Row
+        cur = conn2.cursor()
         cur.execute("SELECT * FROM barchart")
         rows = cur.fetchall()
 
-        #covert to dictionary
+        #convert to dictionary
         for i in rows:
             indiv = {}
             db2["year"] = i["year"]
@@ -81,8 +103,10 @@ def lite_get_db2():
             db2.append(indiv)
     except:
             db2=[]
-    conn.close()
-    return db2
+    finally:        
+        conn2.close()
+
+    return  jsonify(indiv)
 
 
 # @app.teardown_appcontext
@@ -102,13 +126,13 @@ def connect_to_db():
 def lite_get_db3():
     db3 = []
     try:
-        conn = sqlite3.connect(g._database3)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
+        conn3 = sqlite3.connect(g._database3)
+        conn3.row_factory = sqlite3.Row
+        cur = conn3.cursor()
         cur.execute("SELECT * FROM world")
         rows = cur.fetchall()
 
-        #covert to dictionary
+        #convert to dictionary
         for i in rows:
             world = {}
             db3["country"] = i["country"]
@@ -125,8 +149,15 @@ def lite_get_db3():
             db3.append(world)
     except:
             db3=[]
-    conn.close()
-    return db3
+    finally:        
+        conn3.close()
+    return jsonify(world)
+
+
+# insert    
+# db3 =[]
+# for i in db3:
+#     (print(insert_db3(i)))
 
 # @app.teardown_appcontext
 # def close_connection(exception):
@@ -134,22 +165,39 @@ def lite_get_db3():
 #     if db3 is not None:
        
 
+app=Flask(__name__)
+CORS(app)
+#  resources={r"/*":{"origins": "*"}})
 
 @app.route("/")
+@cross_origin()
 
-@app.route("/api/v1.0/from80to2021", methods=['GET'])
-def lite_get_db1():
-    return jsonify(db1())
+def welcome():
+    return (f"welcome")
+
+# ##########################################
+@app.route("/arrivals", methods=['GET'])
+@cross_origin()
+
+def lite_get_db1():    
+        arrivals = {
+            "year": "year",
+            "number": "number"
+        }
+        return jsonify(arrivals)
 
 
-@app.route("/api/v1.0/individual-aslyum", methods=['GET'])
+# ########################################
+@app.route("/individuals", methods=['GET'])
+@cross_origin()
 def lite_get_db2():
-    return jsonify(barchart())
+    return jsonify(lite_get_db2())
 
-
-@app.route("/api/v1.0/worldwide", methods=['GET'])
+# ########################################
+@app.route("/world", methods=['GET'])
+@cross_origin()
 def lite_get_db3():
-    return jsonify(db3())
+    return jsonify(lite_get_db3())
 
 
 

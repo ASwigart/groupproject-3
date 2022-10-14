@@ -1,217 +1,120 @@
-# 
+import numpy as np
 import sqlite3
 import sqlalchemy
-import json
+import json 
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
-from flask import Flask, jsonify, g
-from flask_cors import CORS, cross_origin 
+from flask import Flask, jsonify
+from flask_cors import CORS
 
+# ########################################
+# Database set-up
+# ########################################
 
+engine1 = create_engine("sqlite:///resources/arrivals.sqlite")
+engine2 = create_engine("sqlite:///resources/barchart.sqlite")
+engine3 = create_engine("sqlite:///resources/world.sqlite")
 
-Database1 = '../resources/arrivals.sqlite'
-Database2 = '../resources/barchart.sqlite'
-Database3 = '../resources/world.sqlite'
+# reflect existing
+Base1 = automap_base()
+Base2 = automap_base()
+Base3 = automap_base()
+# reflect the tables
 
-def connect_to_db1():
-    conn1 = sqlite3.connect(Database1)
-    return conn1
-def connect_to_db2():
-    conn2 = sqlite3.connect(Database2)
-    return conn2
-def connect_to_db3():
-    conn3 = sqlite3.connect(Database3)
+Base1.prepare(engine1, reflect=True)
+Base2.prepare(engine2, reflect=True)
+Base3.prepare(engine3, reflect=True)
 
+# save reference to  the table
+Arrivals = Base1.classes.arrivals 
+Barchart = Base2.classes.barchart
+World = Base3.classes.world
 
-# imported from old flask attempt disregard unless needed
-# # DB set-up
-# engine = create_engine("sqlite:///___________.sqlite")
-# # reflect an existing DB
-# Base = automap_base()
-# # reflect tables
-# Base.prepare(engine, reflect=True)
-# # save reference to table
-# Refugee = Base.classes
+# ########################################
+# Flask Set up
+# ########################################
+app = Flask(__name__)
 
-# https://flask.palletsprojects.com/en/2.2.x/patterns/sqlite3/
-# for arrivals
-# @app.route("/api/v1.0/from80to2021")
-
-def connect_to_db1():
-    conn = sqlite3.connect('../resources/arrivals.sqlite')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def lite_get_db1():
-    db1 = []
-    try:
-        conn1 = sqlite3.connect(g._database1)
-        conn1.row_factory = sqlite3.Row
-        cur = conn1.cursor()
-        cur.execute("SELECT * FROM arrivals")
-        rows = cur.fetchall()
-
-        #convert to dictionary
-        for i in rows:
-            arrival = {}
-            arrival["year"] = i["year"]
-            arrival["number"] = i["number"]
-            db1.append(arrival)
-    except:
-            db1=[]
-    finally:        
-        conn1.close()
-    return jsonify({arrival})
-
-
-
-# @app.teardown_appcontext
-# def close_connection(exception):
-#     db1 = getattr(g, '_database1', None)
-#     if db1 is not None:
-        
-
-# barchart 
-# @app.route("/api/v1.0/individual-aslyum")
-
-def connect_to_db():
-    db2 = getattr(g, '_database2', None)
-    if db2 is None:
-        db2 = g._database2 = sqlite3.connect('../resources/barchart.sqlite')
-    return db2
-
-def lite_get_db2():
-    db2 = []
-    try:
-        conn2 = sqlite3.connect(g._database2)
-        conn2.row_factory = sqlite3.Row
-        cur = conn2.cursor()
-        cur.execute("SELECT * FROM barchart")
-        rows = cur.fetchall()
-
-        #convert to dictionary
-        for i in rows:
-            indiv = {}
-            db2["year"] = i["year"]
-            db2["total"] = i["total"]
-            db2["affirmative"] = i["affirmative"]
-            db2["defensive"] = i["defensive"]
-            db2.append(indiv)
-    except:
-            db2=[]
-    finally:        
-        conn2.close()
-
-    return  jsonify(indiv)
-
-
-# @app.teardown_appcontext
-# def close_connection(exception):
-#     db2 = getattr(g, '_database2', None)
-#     if db2 is not None:
-        
-
-# for cholopath
-# @app.route("/api/v1.0/worldwide")
-def connect_to_db():
-    db3 = getattr(g, '_database3', None)
-    if db3 is None:
-        db3 = g._database3 = sqlite3.connect('../resources/world.sqlite')
-    return db3
-
-def lite_get_db3():
-    db3 = []
-    try:
-        conn3 = sqlite3.connect(g._database3)
-        conn3.row_factory = sqlite3.Row
-        cur = conn3.cursor()
-        cur.execute("SELECT * FROM world")
-        rows = cur.fetchall()
-
-        #convert to dictionary
-        for i in rows:
-            world = {}
-            db3["country"] = i["country"]
-            db3["2012"] = i["y2012"]
-            db3["2013"] = i["y2013"]
-            db3["2014"] = i["y2014"]
-            db3["2015"] = i["y2015"]
-            db3["2016"] = i["y2016"]
-            db3["2017"] = i["y2017"]
-            db3["2018"] = i["y2018"]
-            db3["2019"] = i["y2019"]
-            db3["2020"] = i["y2020"]
-            db3["2021"] = i["y2021"]
-            db3.append(world)
-    except:
-            db3=[]
-    finally:        
-        conn3.close()
-    return jsonify(world)
-
-
-# insert    
-# db3 =[]
-# for i in db3:
-#     (print(insert_db3(i)))
-
-# @app.teardown_appcontext
-# def close_connection(exception):
-#     db3 = getattr(g, '_database3', None)
-#     if db3 is not None:
-       
-
-app=Flask(__name__)
-CORS(app)
-#  resources={r"/*":{"origins": "*"}})
+#  #####################################
+# Routes
+# ########################################
 
 @app.route("/")
-@cross_origin()
+def index():
+    return (
+        f"available routes"
+        f"/arrivals"
+        f"/individuals"
+        f"/world"
+    )
 
-def welcome():
-    return (f"welcome")
+@app.route("/arrivals")
+def arrivable():
+    # link
+    session = Session(engine1)
+    db1 = []
+    # Query
+    results = session.query(Arrivals.year, Arrivals.number).all()
+    for i in results:
+        arrival = {}
+        arrival["year"] = i["year"]
+        arrival["number"] = i["number"]
+        db1.append(arrival)
+    
+    session.close()
 
-# ##########################################
-@app.route("/arrivals", methods=['GET'])
-@cross_origin()
+    return jsonify(db1)
+# #################################################################
+@app.route("/individuals")
+def individual():
+    # link
+    session = Session(engine2)
+    # Query
+    results = session.query(Barchart.year, Barchart.total, Barchart.affirmative, Barchart.defensive).all()
+    session.close()
+    # create dictionary 
+    bar_chart = []
+    for row in results: 
+# year, total, affirmative, defensive in results:
+        indiv = {}
+        indiv["year"] = row["year"]
+        indiv["total"] = row["total"]
+        indiv["affirmative"] = row["affirmative"]
+        indiv["defensive"] = row["defensive"] 
+        bar_chart.append(indiv)
 
-def lite_get_db1():    
-        arrivals = {
-            "year": "year",
-            "number": "number"
-        }
-        return jsonify(arrivals)
+    return jsonify(bar_chart)
 
+@app.route("/world")
+def world():
+    # link
+    session = Session(engine3)
+    # Query
+    results = session.query(World.country, World.y2012, World.y2013, World.y2014, World.y2015,World.y2016, World.y2017, World.y2018,
+    World.y2018, World.y2019, World.y2020, World.y2021).all()
+    session.close()
+# create a dictionary
+    world_data = []
+    for row in results:
+# country, y2012, y2013, y2014, y2015,y2016, y2017, y2018, y2019, y2020, y2021 in results:
+        world_dictionary = {}
+        world_dictionary["country"] = row["country"] 
+        world_dictionary["y2012"] = row["y2012"]
+        world_dictionary["y2013"] = row["y2013"]
+        world_dictionary["y2014"] = row["y2014"]
+        world_dictionary["y2014"] = row["y2015"]
+        world_dictionary["y2016"] = row["y2016"]
+        world_dictionary["y2017"] = row["y2017"]
+        world_dictionary["y2018"] = row["y2018"]
+        world_dictionary["y2019"] = row["y2019"]
+        world_dictionary["y2020"] = row["y2020"]
+        world_dictionary["y2021"] = row["y2021"]
+        world_data.append(world_dictionary)
+    return jsonify(world_data)
 
-# ########################################
-@app.route("/individuals", methods=['GET'])
-@cross_origin()
-def lite_get_db2():
-    return jsonify(lite_get_db2())
-
-# ########################################
-@app.route("/world", methods=['GET'])
-@cross_origin()
-def lite_get_db3():
-    return jsonify(lite_get_db3())
-
-
-
-
-# @app.route('/api/users', methods=['GET'])
-# def api_get_users():
- # return jsonify(get_users())
-
-# app= Flask(__name__)
-# CORS(app, resources={r"/*": {"origins": "*"}})
 
 if __name__ =="__main__":
     app.run(debug=True)
-
-
-
-

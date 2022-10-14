@@ -7,7 +7,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 
 # ########################################
@@ -43,13 +43,8 @@ app = Flask(__name__)
 # ########################################
 
 @app.route("/")
-def index():
-    return (
-        f"available routes"
-        f"/arrivals"
-        f"/individuals"
-        f"/world"
-    )
+def homepage():
+    return render_template("index.html")
 
 @app.route("/arrivals")
 def arrivable():

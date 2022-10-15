@@ -1,25 +1,29 @@
+// Create variables for the different routes
 const url_arriv = "http://127.0.0.1:5000/arrivals"
 const url_indiv = "http://127.0.0.1:5000/individuals"
 const url_world = "http://127.0.0.1:5000/world"
 
-// Initialize function that pulls the subject ID numbers and adds them to the drop-down to feed into building the charts.
+// Initialize function that pulls the years and adds them to the drop-down to feed into building the charts.
 // Function codes built up from tutoring session with Kelli Kennedy
 function init() {
-    var dropDown = d3.select("selDataset");
+    // Create a variable for the drop-down and use D3 to select it from the html
+    var dropDown = d3.select("#selDataset");
     // Fetch the JSON data
-    let years = []
     d3.json(url_arriv).then(function (data) {
-        console.log(data);
-        // var arrivYear = data.year;
-        // console.log(arrivYear)
-        for (let i=0; i < data.length; i++) {
-            let arr_year = data[i].year;
+        // Create a new list for the years of arrival
+        var years = []
+        // Loop through the data and push the years into the empty list
+        for (var i=0; i < data.length; i++) {
+            var arr_year = data[i].year;
             years.push(arr_year);
         };
+        // Confirm the loop pushed years into the list.
+        console.log(years);
+        // Add each year to the drop-down option
         years.forEach((y) => {
                 dropDown.append("option").text(y).property("value", y)
-            });
-        console.log(years);
+        });
+
         // var initSample = sampleId[0];
         // buildDemo(initSample);
         // buildCharts(initSample);

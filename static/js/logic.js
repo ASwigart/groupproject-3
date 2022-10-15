@@ -20,10 +20,11 @@ function init() {
         // Confirm the loop pushed years into the list.
         console.log(years);
         // Add each year to the drop-down option
-        years.forEach((y) => {
-                dropDown.append("option").text(y).property("value", y)
+        years.forEach(year => {
+                dropDown.append("option").text(year).property("value", year)
         });
-
+        // Review info in drop-down
+        console.log(dropDown)
         // var initSample = sampleId[0];
         // buildDemo(initSample);
         // buildCharts(initSample);

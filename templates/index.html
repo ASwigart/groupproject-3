@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>US ASYLUM</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
@@ -22,38 +22,7 @@
           Year
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">1990</a>
-          <a class="dropdown-item" href="#">1991</a>
-          <a class="dropdown-item" href="#">1992</a>
-          <a class="dropdown-item" href="#">1993</a>
-          <a class="dropdown-item" href="#">1994</a>
-          <a class="dropdown-item" href="#">1995</a>
-          <a class="dropdown-item" href="#">1996</a>
-          <a class="dropdown-item" href="#">1997</a>
-          <a class="dropdown-item" href="#">1998</a>
-          <a class="dropdown-item" href="#">1999</a>
-          <a class="dropdown-item" href="#">2000</a>
-          <a class="dropdown-item" href="#">2001</a>
-          <a class="dropdown-item" href="#">2002</a>
-          <a class="dropdown-item" href="#">2003</a>
-          <a class="dropdown-item" href="#">2004</a>
-          <a class="dropdown-item" href="#">2005</a>
-          <a class="dropdown-item" href="#">2006</a>
-          <a class="dropdown-item" href="#">2007</a>
-          <a class="dropdown-item" href="#">2008</a>
-          <a class="dropdown-item" href="#">2009</a>
-          <a class="dropdown-item" href="#">2010</a>
-          <a class="dropdown-item" href="#">2011</a>
-          <a class="dropdown-item" href="#">2012</a>
-          <a class="dropdown-item" href="#">2013</a>
-          <a class="dropdown-item" href="#">2014</a>
-          <a class="dropdown-item" href="#">2015</a>
-          <a class="dropdown-item" href="#">2016</a>
-          <a class="dropdown-item" href="#">2017</a>
-          <a class="dropdown-item" href="#">2018</a>
-          <a class="dropdown-item" href="#">2019</a>
-          <a class="dropdown-item" href="#">2020</a>
-          <a class="dropdown-item" href="#">2021</a>
+          <select id="selDataset" onchange="optionChanged(this.value)"></select>
         </div>
       </div>
       <!-- sections for visualizations -->
@@ -96,7 +65,8 @@
   </div>
 
   <!-- js & bootstrap scripts -->
-  <script src="../logic.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="../static/js/logic.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </body>

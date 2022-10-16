@@ -15,20 +15,19 @@ function init() {
         // Loop through the data and push the years into the empty list
         for (var i=0; i < data.length; i++) {
             var arr_year = data[i].year;
-            years.push(arr_year);
+            years.push(arr_year.toString());
         };
         // Confirm the loop pushed years into the list.
         console.log(years);
         // Add each year to the drop-down option
-        years.forEach(year => {
+        years.forEach((year) => {
                 dropDown.append("option").text(year).property("value", year)
-        });
+            console.log(year)
+            });
         // Review info in drop-down
         console.log(dropDown)
-        // var initSample = sampleId[0];
-        // buildDemo(initSample);
-        // buildCharts(initSample);
-        // console.log(data);
+        var initYear = years[10];
+        // buildCharts(initYear);
     });
 
 };

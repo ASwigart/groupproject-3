@@ -6,12 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>US ASYLUM</title>
-  <!-- This is some rando code to solve the CORS problem -->
-  <!-- https://stackoverflow.com/questions/20035101/why-does-my-javascript-code-receive-a-no-access-control-allow-origin-header-i -->
-  <?php header ('Access-Control-Allow-Origin: *')>
-  <!-- two style sheets, when the bootstrap link is commeted out the dropdown div classes appear -->
-  <link rel="stylesheet1" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet2" href="../static/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
@@ -21,10 +17,9 @@
         <h1>AFFIRMATIVE AND DEFENSIVE ASYLUM IN THE US 1990-2021</h1>
       </div>
       <!-- dropdown button -->
-      <div class="well">
-        <h3>Country:</h3>
+      <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <select id="selDataset" onchange="optionChanged(this.value)"></select>"
+          Year
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="#">1990</a>
@@ -101,8 +96,7 @@
   </div>
 
   <!-- js & bootstrap scripts -->
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="../logic.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="../static/js/logic.js"></script>
 </body>

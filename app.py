@@ -111,6 +111,5 @@ def world():
     return jsonify(world_data)
 
 
-
 if __name__ =="__main__":
     app.run(debug=True)

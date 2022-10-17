@@ -7,7 +7,7 @@ const url_world = "http://127.0.0.1:5000/world"
 // Function codes built up from tutoring session with Kelli Kennedy
 function init() {
     // Create a variable for the drop-down and use D3 to select it from the html
-    var dropDown = d3.select("#selDataset");
+    // var dropDown = d3.select("#selDataset");
     // Fetch the JSON data
     d3.json(url_arriv).then(function (number) {
         // Create a new list for the years of arrival
@@ -27,11 +27,11 @@ function init() {
         // Confirm the loop pushed years into the list.
         // console.log(arriv);
         // Add each year to the drop-down option
-        rev_years = years.reverse()
-        rev_years.forEach((year) => {
-            dropDown.append("option").text(year).property("value", year)
-        // console.log(year)
-            });
+        // rev_years = years.reverse()
+        // rev_years.forEach((year) => {
+        //     dropDown.append("option").text(year).property("value", year)
+        // // console.log(year)
+        //     });
         // Review info in drop-down
         // console.log(dropDown)
         var trace1 = {
@@ -127,45 +127,108 @@ function buildIndiv() {
 };
 
 function buildWorld(year) {
+    var dropDown = d3.select("#selDataset");
     d3.json(url_world).then(function (data) {
-        console.log(data[0].country);
-        // var dict = {};
-        var twelve = []
-        var thirteen = []
-        var fourteen = []
-        var fifteen = []
-        var sixteen = []
-        var seventeen = []
-        var eighteen = []
-        var nineteen = []
-        var twenty = []
-        var twentyOne = []
-        var country = []
-        for (var i=0; i < data.length; i++) {
-            var wCountry = data[i].country;
-            var y12 = data[i].y2012;
-            var y13 = data[i].y2013;
-            var y14 = data[i].y2014;
-            var y15 = data[i].y2015;
-            var y16 = data[i].y2016;
-            var y17 = data[i].y2017;
-            var y18 = data[i].y2018;
-            var y19 = data[i].y2019;
-            var y20 = data[i].y2020;
-            var y21 = data[i].y2021;
-            country.push(wCountry);
-            twelve.push(y12);
-            thirteen.push(y13);
-            fourteen.push(y14);
-            fifteen.push(y15);
-            sixteen.push(y16);
-            seventeen.push(y17);
-            eighteen.push(y18);
-            nineteen.push(y19);
-            twenty.push(y20);
-            twentyOne.push(y21);
-        };
-        console.log(twelve)
+                // Create a new list for the years of arrival
+                var allCountries = []
+                // var countries = []
+                var arriv2012 = []
+                var arriv2013 = []
+                var arriv2014 = []
+                var arriv2015 = []
+                var arriv2016 = []
+                var arriv2017 = []
+                var arriv2018 = []
+                var arriv2019 = []
+                var arriv2020 = []
+                var arriv2021 = []
+                var years = ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"]
+                // Loop through the data and push the years and arrival numbers into empty lists
+                for (var i=0; i < data.length; i++) {
+                    var origin = data[i].country;
+                    allCountries.push(origin);
+                    var arrivy2012 = data[i].y2012;
+                    arriv2012.push(arrivy2012);
+                    
+                    var arrivy2013 = data[i].y2013;
+                    arriv2013.push(arrivy2013);
+
+                    var arrivy2014 = data[i].y2014;
+                    arriv2014.push(arrivy2014);
+
+                    var arrivy2015 = data[i].y2015;
+                    arriv2015.push(arrivy2015);
+
+                    var arrivy2016 = data[i].y2016;
+                    arriv2016.push(arrivy2016);
+
+                    var arrivy2017 = data[i].y2017;
+                    arriv2017.push(arrivy2017);
+
+                    var arrivy2018 = data[i].y2018;
+                    arriv2018.push(arrivy2018);
+
+                    var arrivy2019 = data[i].y2019;
+                    arriv2019.push(arrivy2019);
+
+                    var arrivy2020 = data[i].y2020;
+                    arriv2020.push(arrivy2020);
+
+                    var arrivy2021 = data[i].y2021;
+                    arriv2021.push(arrivy2021);
+                };
+                // Confirm the loop pushed years into the list.
+                // console.log(arriv);
+                // Add each year to the drop-down option
+                allCountries.forEach((country) => {
+                    dropDown.append("option").text(country).property("value", country)
+                console.log(arriv2012)
+                    });
+        
+        
+        // console.log(data[0].country);
+        // // var dict = {};
+        // var twelve = {}
+        // var thirteen = []
+        // var fourteen = []
+        // var fifteen = []
+        // var sixteen = []
+        // var seventeen = []
+        // var eighteen = []
+        // var nineteen = []
+        // var twenty = []
+        // var twentyOne = []
+        // var country = []
+        // for (var i=0; i < data.length; i++) {
+        //     var wCountry = data[i].country;
+        //     var y12 = data[i].y2012;
+        //     var y13 = data[i].y2013;
+        //     var y14 = data[i].y2014;
+        //     var y15 = data[i].y2015;
+        //     var y16 = data[i].y2016;
+        //     var y17 = data[i].y2017;
+        //     var y18 = data[i].y2018;
+        //     var y19 = data[i].y2019;
+        //     var y20 = data[i].y2020;
+        //     var y21 = data[i].y2021;
+        //     twelve.push({
+        //         country: wCountry,
+        //         year: 2012,
+        //         arrivals: y12
+        //     });
+        //     country.push(wCountry);
+        //     twelve.push(y12);
+        //     thirteen.push(y13);
+        //     fourteen.push(y14);
+        //     fifteen.push(y15);
+        //     sixteen.push(y16);
+        //     seventeen.push(y17);
+        //     eighteen.push(y18);
+        //     nineteen.push(y19);
+        //     twenty.push(y20);
+        //     twentyOne.push(y21);
+        // };
+        // console.log(twelve)
     });
 }
 

@@ -100,7 +100,7 @@ def world():
         world_dictionary["y2012"] = row["y2012"]
         world_dictionary["y2013"] = row["y2013"]
         world_dictionary["y2014"] = row["y2014"]
-        world_dictionary["y2014"] = row["y2015"]
+        world_dictionary["y2015"] = row["y2015"]
         world_dictionary["y2016"] = row["y2016"]
         world_dictionary["y2017"] = row["y2017"]
         world_dictionary["y2018"] = row["y2018"]

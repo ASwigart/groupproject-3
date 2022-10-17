@@ -20,15 +20,6 @@
         <div class="row">
             <h4>Asylum seekers are those who meet the criteria for refugee status but apply from within the United States, or at ports of entry, <br> after arriving under a different status. Asylum seekers follow a different protocol than those applying for refugee status.</h4>
           </div>
-      <!-- dropdown button -->
-      <div class="container">
-        <div class="row">
-          <div class="well">
-            <h3>Year:</h3>
-            <select id="selDataset" onchange="optionChanged(this.value)"></select>
-          </div>
-        </div>
-      </div>
       <!-- sections for visualizations, more description -->
       <div class="body">
         <div class="row">
@@ -60,7 +51,16 @@
       <div class="row">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">World</h3>
+            <!-- <h3 class="panel-title">World</h3> -->
+                  <!-- dropdown button -->
+            <div class="container">
+              <div class="row">
+                <div class="well">
+                  <h3>Country:</h3>
+                  <select id="selDataset" onchange="optionChanged(this.value)"></select>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="sample-metadata" class="panel-body"></div>
         </div>

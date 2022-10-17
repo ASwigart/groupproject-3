@@ -51,8 +51,8 @@ function init() {
             }
         };
         Plotly.newPlot("Arrivals", data, layout);
-        var initYear = rev_years[0];
-        buildWorld(initYear);
+        // var initYear = rev_years[0];
+        buildWorld();
         buildIndiv();
     });
 
@@ -129,6 +129,7 @@ function buildIndiv() {
 function buildWorld(year) {
     d3.json(url_world).then(function (data) {
         console.log(data[0].country);
+        // var dict = {};
         var twelve = []
         var thirteen = []
         var fourteen = []

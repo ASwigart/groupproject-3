@@ -31,7 +31,7 @@ function init() {
 
         let data = [trace1];
         let layout = {
-            title: "Total Refugee Arrivals by Year since 1980",
+            title: "Total Refugee Arrivals by Year",
             xaxis: {
                 title: "Year of Arrival"
             },
@@ -133,7 +133,7 @@ function buildWorld(year) {
                     allCountries.push(trace);
                 };
                 let layout = {
-                    title: "Total Refugee Arrivals by Year since 1980",
+                    title: "Total Refugees by Country",
                     xaxis: {
                         title: "Year of Arrival"
                     },
